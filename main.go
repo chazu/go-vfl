@@ -19,12 +19,16 @@ type View struct {
 	Name string `"[" @Ident "]"`
 }
 
+type Program struct {
+	Views []*View `@@*`
+}
+
 func main() {
 
-	p := participle.MustBuild[View](
+	p := participle.MustBuild[Program](
 		participle.Lexer(l),
 	)
-	res, err := p.ParseString("", "[Test]")
+	res, err := p.ParseString("", "[Test1][Test2]")
 	if err != nil {
 		panic(err)
 	}
