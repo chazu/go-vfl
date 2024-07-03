@@ -12,6 +12,7 @@ var (
 		{"Ident", "[a-zA-Z_][a-zA-Z0-9_]*"},
 		{"Number", "[0-9]+"},
 		{"Punctuation", `[][.,]`},
+		{"Relation", "==|>=|<="},
 	})
 )
 
@@ -21,6 +22,35 @@ type View struct {
 
 type Program struct {
 	Views []*View `@@*`
+}
+
+type Relation struct {
+	Eq  string `==`
+	Gte string `| >=`
+	Lte string `| <=`
+}
+
+type SimplePredicate struct {
+	Value int `@Number`
+}
+
+type PredicateObject struct {
+	Number   int    `@Number`
+	ViewName string `| @Ident`
+}
+
+type Predicate struct {
+	Relation *Relation        `@Relation?`
+	Object   *PredicateObject `@@`
+	Priority *int             `("@" @Number)?`
+}
+
+type PredicateList struct {
+	Predicates []*Predicate
+}
+
+type PredicateOrList struct {
+	Predicate *SimplePredicate `@@`
 }
 
 func main() {
