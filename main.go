@@ -19,6 +19,7 @@ var (
 		{"At", "@"},
 		{"OpenParen", "\\("},
 		{"CloseParen", "\\)"},
+		{"Colon", ":"},
 	})
 )
 
@@ -28,7 +29,8 @@ type View struct {
 }
 
 type Program struct {
-	Views []*View `@@*`
+	Orientation *Orientation `@@?`
+	Views       []*View      `@@*`
 }
 
 type Relation struct {
@@ -51,9 +53,14 @@ type Predicate struct {
 type Priority struct {
 	Value *int `At @Number`
 }
+
 type PredicateList struct {
 	Predicates []*Predicate `OpenParen @@ ("," @@)* CloseParen`
 	Predicate  *Predicate   `| @@`
+}
+
+type Orientation struct {
+	Direction *string `(@"H"? @"V"?)! Colon`
 }
 
 // FML how do i do this lol
@@ -75,6 +82,8 @@ func main() {
 		"[Test1 >=40][Test2 >=Foo@10]",
 		"[Test1 (>=40,<=80)]",
 		"[Test1 (>=40)]",
+		"H:[TestView]",
+		"V:[TestView]",
 	}
 	for _, c := range cases {
 		fmt.Printf("%s...", c)
