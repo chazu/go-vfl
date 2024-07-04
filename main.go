@@ -28,7 +28,7 @@ var (
 type Program struct {
 	Orientation                 *Orientation                 `@@?`
 	LeadingSuperViewConnection  *LeadingSuperViewConnection  `@@?`
-	Views                       []*View                      `@@ @@*`
+	Views                       []*View                      `@@+`
 	TrailingSuperViewConnection *TrailingSuperViewConnection `@@?`
 }
 
@@ -69,7 +69,7 @@ type Orientation struct {
 }
 
 type SuperView struct {
-	Present *bool `Pipe`
+	Present *bool `@Pipe`
 }
 
 type LeadingSuperViewConnection struct {
@@ -106,7 +106,8 @@ func main() {
 		"V:[TestView]-[TestTwo]",
 		"V:[TestView]-50-[TestTwo]",
 		"|-[Test]-|",
-		"|-50-[Test]-50-|",
+		"|-50-[Test]-|",
+		"|-(50)-[Test]-(50)-|",
 	}
 	for _, c := range cases {
 		fmt.Printf("%s...", c)
