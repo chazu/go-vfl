@@ -17,6 +17,8 @@ var (
 		{"Relation", "==|>=|<="},
 		{"Space", " +"},
 		{"At", "@"},
+		{"OpenParen", "\\("},
+		{"CloseParen", "\\)"},
 	})
 )
 
@@ -50,36 +52,16 @@ type Priority struct {
 	Value *int `At @Number`
 }
 type PredicateList struct {
-	Predicates []*Predicate `"(" @@ ("(" "," @@ ")")?  ")"`
+	Predicates []*Predicate `OpenParen @@ ("," @@)* CloseParen`
 	Predicate  *Predicate   `| @@`
 }
 
 func main() {
 
-	p := participle.MustBuild[Predicate](
+	p := participle.MustBuild[Program](
 		participle.Lexer(l),
 	)
 	cases := []string{
-		"40",
-		"Foo",
-		">=Foo",
-		">=40",
-		"40@100",
-	}
-	for _, c := range cases {
-		fmt.Printf("%s...", c)
-		res, err := p.ParseString("", c)
-		if err != nil {
-			panic(err)
-		}
-		fmt.Printf("OK\n")
-		spew.Dump(res)
-	}
-
-	p2 := participle.MustBuild[Program](
-		participle.Lexer(l),
-	)
-	cases = []string{
 		"[Test]",
 		"[Test 40]",
 		"[Test1][Test2]",
@@ -87,10 +69,11 @@ func main() {
 		"[Test1 >=40@10]",
 		"[Test1 >=40][Test2 >=Foo]",
 		"[Test1 >=40][Test2 >=Foo@10]",
+		"[Test1 (>=40,<=80)]",
 	}
 	for _, c := range cases {
 		fmt.Printf("%s...", c)
-		res, err := p2.ParseString("", c)
+		res, err := p.ParseString("", c)
 		if err != nil {
 			panic(err)
 		}
