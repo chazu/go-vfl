@@ -56,6 +56,10 @@ type PredicateList struct {
 	Predicate  *Predicate   `| @@`
 }
 
+// FML how do i do this lol
+type Connection struct {
+}
+
 func main() {
 
 	p := participle.MustBuild[Program](
