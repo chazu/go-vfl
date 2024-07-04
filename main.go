@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/alecthomas/participle/v2"
 	"github.com/alecthomas/participle/v2/lexer"
 	"github.com/davecgh/go-spew/spew"
@@ -13,11 +15,13 @@ var (
 		{"Number", "[0-9]+"},
 		{"Punctuation", `[][.,]`},
 		{"Relation", "==|>=|<="},
+		{"Space", " +"},
 	})
 )
 
 type View struct {
-	Name string `"[" @Ident "]"`
+	Name      string        `"[" @Ident`
+	Predicate PredicateList `(Space @@)? "]"`
 }
 
 type Program struct {
@@ -25,13 +29,9 @@ type Program struct {
 }
 
 type Relation struct {
-	Eq  string `==`
-	Gte string `| >=`
-	Lte string `| <=`
-}
-
-type SimplePredicate struct {
-	Value int `@Number`
+	Eq  *bool `@"=="`
+	Gte *bool `| @">="`
+	Lte *bool `| @"<="`
 }
 
 type PredicateObject struct {
@@ -40,28 +40,58 @@ type PredicateObject struct {
 }
 
 type Predicate struct {
-	Relation *Relation        `@Relation?`
+	Relation *Relation        `@@?`
 	Object   *PredicateObject `@@`
 	Priority *int             `("@" @Number)?`
 }
 
 type PredicateList struct {
-	Predicates []*Predicate
-}
-
-type PredicateOrList struct {
-	Predicate *SimplePredicate `@@`
+	Predicates []*Predicate `"(" @@ ("(" "," @@ ")")?  ")"`
+	Predicate  *Predicate   `| @@`
 }
 
 func main() {
 
-	p := participle.MustBuild[Program](
+	p := participle.MustBuild[Predicate](
 		participle.Lexer(l),
 	)
-	res, err := p.ParseString("", "[Test1][Test2]")
-	if err != nil {
-		panic(err)
+	cases := []string{
+		"40",
+		"Foo",
+		">=Foo",
+		">=40",
+		"40@100",
+	}
+	for _, c := range cases {
+		fmt.Printf("%s...", c)
+		res, err := p.ParseString("", c)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Printf("OK\n")
+		spew.Dump(res)
 	}
 
-	spew.Dump(res)
+	p2 := participle.MustBuild[Program](
+		participle.Lexer(l),
+	)
+	cases = []string{
+		"[Test]",
+		"[Test 40]",
+		"[Test1][Test2]",
+		"[Test1 >=40]",
+		"[Test1 >=40@10]",
+		"[Test1 >=40][Test2 >=Foo]",
+		"[Test1 >=40][Test2 >=Foo@10]",
+	}
+	for _, c := range cases {
+		fmt.Printf("%s...", c)
+		res, err := p2.ParseString("", c)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Printf("OK\n")
+		spew.Dump(res)
+	}
+
 }
