@@ -23,14 +23,14 @@ var (
 	})
 )
 
+type Program struct {
+	Orientation *Orientation `@@?`
+	Views       []*View      `@@ @@?`
+}
+
 type View struct {
 	Name      string        `"[" @Ident`
 	Predicate PredicateList `(Space @@)? "]"`
-}
-
-type Program struct {
-	Orientation *Orientation `@@?`
-	Views       []*View      `@@*`
 }
 
 type Relation struct {
@@ -63,8 +63,8 @@ type Orientation struct {
 	Direction *string `(@"H"? @"V"?)! Colon`
 }
 
-// FML how do i do this lol
 type Connection struct {
+	Predicates *PredicateList `"-" (@@ "-")?`
 }
 
 func main() {
