@@ -20,17 +20,22 @@ var (
 		{"OpenParen", "\\("},
 		{"CloseParen", "\\)"},
 		{"Colon", ":"},
+		{"Pipe", "\\|"},
+		{"Dash", "-"},
 	})
 )
 
 type Program struct {
-	Orientation *Orientation `@@?`
-	Views       []*View      `@@ @@?`
+	Orientation                 *Orientation                 `@@?`
+	LeadingSuperViewConnection  *LeadingSuperViewConnection  `@@?`
+	Views                       []*View                      `@@ @@*`
+	TrailingSuperViewConnection *TrailingSuperViewConnection `@@?`
 }
 
 type View struct {
-	Name      string        `"[" @Ident`
-	Predicate PredicateList `(Space @@)? "]"`
+	Connection *Connection   `@@?`
+	Name       string        `"[" @Ident`
+	Predicate  PredicateList `(Space @@)? "]"`
 }
 
 type Relation struct {
@@ -63,8 +68,22 @@ type Orientation struct {
 	Direction *string `(@"H"? @"V"?)! Colon`
 }
 
+type SuperView struct {
+	Present *bool `Pipe`
+}
+
+type LeadingSuperViewConnection struct {
+	SuperView  *SuperView  `@@`
+	Connection *Connection `@@?`
+}
+
+type TrailingSuperViewConnection struct {
+	Connection *Connection `@@?`
+	SuperView  *SuperView  `@@`
+}
+
 type Connection struct {
-	Predicates *PredicateList `"-" (@@ "-")?`
+	Predicates *PredicateList `Dash (@@ Dash)?`
 }
 
 func main() {
@@ -84,6 +103,10 @@ func main() {
 		"[Test1 (>=40)]",
 		"H:[TestView]",
 		"V:[TestView]",
+		"V:[TestView]-[TestTwo]",
+		"V:[TestView]-50-[TestTwo]",
+		"|-[Test]-|",
+		"|-50-[Test]-50-|",
 	}
 	for _, c := range cases {
 		fmt.Printf("%s...", c)
