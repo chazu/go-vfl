@@ -70,6 +70,7 @@ func main() {
 		"[Test1 >=40][Test2 >=Foo]",
 		"[Test1 >=40][Test2 >=Foo@10]",
 		"[Test1 (>=40,<=80)]",
+		"[Test1 (>=40)]",
 	}
 	for _, c := range cases {
 		fmt.Printf("%s...", c)
