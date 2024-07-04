@@ -16,6 +16,7 @@ var (
 		{"Punctuation", `[][.,]`},
 		{"Relation", "==|>=|<="},
 		{"Space", " +"},
+		{"At", "@"},
 	})
 )
 
@@ -42,9 +43,12 @@ type PredicateObject struct {
 type Predicate struct {
 	Relation *Relation        `@@?`
 	Object   *PredicateObject `@@`
-	Priority *int             `("@" @Number)?`
+	Priority *Priority        `@@?`
 }
 
+type Priority struct {
+	Value *int `At @Number`
+}
 type PredicateList struct {
 	Predicates []*Predicate `"(" @@ ("(" "," @@ ")")?  ")"`
 	Predicate  *Predicate   `| @@`
