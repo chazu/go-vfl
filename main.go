@@ -68,18 +68,14 @@ type Orientation struct {
 	Direction *string `(@"H"? @"V"?)! Colon`
 }
 
-type SuperView struct {
-	Present *bool `@Pipe`
-}
-
 type LeadingSuperViewConnection struct {
-	SuperView  *SuperView  `@@`
+	SuperView  bool        `@Pipe`
 	Connection *Connection `@@?`
 }
 
 type TrailingSuperViewConnection struct {
 	Connection *Connection `@@?`
-	SuperView  *SuperView  `@@`
+	SuperView  bool        `@Pipe`
 }
 
 type Connection struct {
@@ -90,6 +86,7 @@ func main() {
 
 	p := participle.MustBuild[Program](
 		participle.Lexer(l),
+		participle.UseLookahead(10),
 	)
 	cases := []string{
 		"[Test]",
