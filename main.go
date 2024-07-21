@@ -102,6 +102,7 @@ func main() {
 		"V:[TestView]",
 		"V:[TestView]-[TestTwo]",
 		"V:[TestView]-50-[TestTwo]",
+		"V:|[TestView]-50-[TestTwo]|",
 		"|[Test]|",
 		"|[Test][TestTwo]|",
 		"|[Test]-[TestTwo]|",
