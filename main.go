@@ -3,35 +3,34 @@ package main
 import (
 	"fmt"
 
-	"github.com/chazu/go-vfl/internal/parser"
+	"github.com/chazu/go-vfl/pkg/parser"
 	"github.com/davecgh/go-spew/spew"
 )
 
 func main() {
 
 	cases := []string{
-		"[Test]",
 		"[Test 40]",
-		"[Test1][Test2]",
-		"[Test1 >=40]",
-		"[Test1 >=40@10]",
-		"[Test1 >=40][Test2 >=Foo]",
-		"[Test1 >=40][Test2 >=Foo@10]",
-		"[Test1 (>=40,<=80)]",
-		"[Test1 (>=40)]",
-		"H:[TestView]",
-		"V:[TestView]",
-		"V:[TestView]-[TestTwo]",
-		"V:[TestView]-50-[TestTwo]",
-		"V:|[TestView]-50-[TestTwo]|",
-		"|[Test]|",
-		"|[Test][TestTwo]|",
-		"|[Test]-[TestTwo]|",
-		"|[Test]-(50)-[TestTwo]|",
-		"|-[Test]-|",
-		"|-50-[Test]-|",
-		"|-50-[Test]-50-|",
-		"|-(>=50@10)-[Test]-(>=50@10)-|",
+		// "[Test1][Test2]",
+		// "[Test1 >=40]",
+		// "[Test1 >=40@10]",
+		// "[Test1 >=40][Test2 >=Foo]",
+		// "[Test1 >=40][Test2 >=Foo@10]",
+		// "[Test1 (>=40,<=80)]",
+		// "[Test1 (>=40)]",
+		// "H:[TestView]",
+		// "V:[TestView]",
+		// "V:[TestView]-[TestTwo]",
+		// "V:[TestView]-50-[TestTwo]",
+		// "V:|[TestView]-50-[TestTwo]|",
+		// "|[Test]|",
+		// "|[Test][TestTwo]|",
+		// "|[Test]-[TestTwo]|",
+		// "|[Test]-(50)-[TestTwo]|",
+		// "|-[Test]-|",
+		// "|-50-[Test]-|",
+		// "|-50-[Test]-50-|",
+		// "|-(>=50@10)-[Test]-(>=50@10)-|",
 	}
 
 	for _, c := range cases {

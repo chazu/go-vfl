@@ -35,9 +35,9 @@ type View struct {
 }
 
 type Relation struct {
-	Eq  *bool `@"=="`
-	Gte *bool `| @">="`
+	Gte *bool ` @">="`
 	Lte *bool `| @"<="`
+	Eq  *bool `| @"=="`
 }
 
 type PredicateObject struct {
