@@ -3,91 +3,12 @@ package main
 import (
 	"fmt"
 
-	"github.com/alecthomas/participle/v2"
-	"github.com/alecthomas/participle/v2/lexer"
+	"github.com/chazu/go-vfl/internal/parser"
 	"github.com/davecgh/go-spew/spew"
 )
 
-var (
-	//Custom lexer
-	l = lexer.MustSimple([]lexer.SimpleRule{
-		{"Ident", "[a-zA-Z_][a-zA-Z0-9_]*"},
-		{"Number", "[0-9]+"},
-		{"Punctuation", `[][.,]`},
-		{"Relation", "==|>=|<="},
-		{"Space", " +"},
-		{"At", "@"},
-		{"OpenParen", "\\("},
-		{"CloseParen", "\\)"},
-		{"Colon", ":"},
-		{"Pipe", "\\|"},
-		{"Dash", "-"},
-	})
-)
-
-type Program struct {
-	Orientation                 *Orientation                 `@@?`
-	LeadingSuperViewConnection  *LeadingSuperViewConnection  `@@?`
-	Views                       []*View                      `@@+`
-	TrailingSuperViewConnection *TrailingSuperViewConnection `@@?`
-}
-
-type View struct {
-	Connection *Connection   `@@?`
-	Name       string        `"[" @Ident`
-	Predicate  PredicateList `(Space @@)? "]"`
-}
-
-type Relation struct {
-	Eq  *bool `@"=="`
-	Gte *bool `| @">="`
-	Lte *bool `| @"<="`
-}
-
-type PredicateObject struct {
-	Number   int    `@Number`
-	ViewName string `| @Ident`
-}
-
-type Predicate struct {
-	Relation *Relation        `@@?`
-	Object   *PredicateObject `@@`
-	Priority *Priority        `@@?`
-}
-
-type Priority struct {
-	Value *int `At @Number`
-}
-
-type PredicateList struct {
-	Predicates []*Predicate `OpenParen @@ ("," @@)* CloseParen`
-	Predicate  *Predicate   `| @@`
-}
-
-type Orientation struct {
-	Direction *string `(@"H"? @"V"?)! Colon`
-}
-
-type LeadingSuperViewConnection struct {
-	SuperView  bool        `@Pipe`
-	Connection *Connection `@@?`
-}
-
-type TrailingSuperViewConnection struct {
-	Connection *Connection `@@?`
-	SuperView  bool        `@Pipe`
-}
-
-type Connection struct {
-	Predicates *PredicateList `Dash (@@ Dash)?`
-}
-
 func main() {
 
-	p := participle.MustBuild[Program](
-		participle.Lexer(l),
-		participle.UseLookahead(10),
-	)
 	cases := []string{
 		"[Test]",
 		"[Test 40]",
@@ -112,9 +33,11 @@ func main() {
 		"|-50-[Test]-50-|",
 		"|-(>=50@10)-[Test]-(>=50@10)-|",
 	}
+
 	for _, c := range cases {
 		fmt.Printf("%s...", c)
-		res, err := p.ParseString("", c)
+		p := parser.New(parser.WithLookahead(25))
+		res, err := p.ParseProgram(c)
 		if err != nil {
 			panic(err)
 		}
