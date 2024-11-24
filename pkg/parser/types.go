@@ -31,13 +31,13 @@ type Program struct {
 type View struct {
 	Connection *Connection   `@@?`
 	Name       string        `"[" @Ident`
-	Predicate  PredicateList `(Space @@)? "]"`
+	Predicate  PredicateList `(Space? @@)? "]"`
 }
 
 type Relation struct {
-	Gte *bool ` @">="`
-	Lte *bool `| @"<="`
-	Eq  *bool `| @"=="`
+	Gte bool ` @">="`
+	Lte bool `| @"<="`
+	Eq  bool `| @"=="`
 }
 
 type PredicateObject struct {
