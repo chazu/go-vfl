@@ -34,6 +34,16 @@ type View struct {
 	Predicate  PredicateList `(Space? @@)? "]"`
 }
 
+func (v *View) Predicates() []*Predicate {
+	if v.Predicate.Predicate != nil {
+		return []*Predicate{v.Predicate.Predicate}
+	} else if v.Predicate.Predicates != nil {
+		return v.Predicate.Predicates
+	} else {
+		return []*Predicate{}
+	}
+}
+
 type Relation struct {
 	Gte bool ` @">="`
 	Lte bool `| @"<="`

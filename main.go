@@ -10,16 +10,13 @@ import (
 func main() {
 
 	cases := []string{
-		"[Test 40]",
 		// "[Test1][Test2]",
 		// "[Test1 >=40]",
 		// "[Test1 >=40@10]",
 		// "[Test1 >=40][Test2 >=Foo]",
 		// "[Test1 >=40][Test2 >=Foo@10]",
-		// "[Test1 (>=40,<=80)]",
+		// "[Test1(>=40,<=80)]",
 		// "[Test1 (>=40)]",
-		// "H:[TestView]",
-		// "V:[TestView]",
 		// "V:[TestView]-[TestTwo]",
 		// "V:[TestView]-50-[TestTwo]",
 		// "V:|[TestView]-50-[TestTwo]|",
@@ -35,13 +32,13 @@ func main() {
 
 	for _, c := range cases {
 		fmt.Printf("%s...", c)
-		p := parser.New(parser.WithLookahead(25))
+		p := parser.New(parser.WithLookahead(250))
 		res, err := p.ParseProgram(c)
 		if err != nil {
 			panic(err)
 		}
 		fmt.Printf("OK\n")
-		spew.Dump(res)
+		spew.Dump(res.Views[1])
 	}
 
 }
