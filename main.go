@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/chazu/go-vfl/pkg/parser"
+	"github.com/chazu/go-vfl/internal/parser"
 	"github.com/davecgh/go-spew/spew"
 )
 
