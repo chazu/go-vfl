@@ -201,16 +201,16 @@ func TestLeadingAndTrailingSuperviewConnections(t *testing.T) {
 	res, err := psr.ParseProgram(program)
 
 	assert.Nil(t, err)
-	assert.NotNil(t, res.LeadingSuperViewConnection)
-	assert.NotNil(t, res.TrailingSuperViewConnection)
+	assert.NotNil(t, res.LeadingSuperviewConnection)
+	assert.NotNil(t, res.TrailingSuperviewConnection)
 }
 
 func TestSuperviewConnectionPredicatesSimple(t *testing.T) {
 	program := "|-50-[Test]-50-|"
 	res, err := psr.ParseProgram(program)
 	assert.Nil(t, err)
-	assert.Equal(t, res.LeadingSuperViewConnection.Connection.Predicates.Predicate.Object.Number, 50)
-	assert.Equal(t, res.TrailingSuperViewConnection.Connection.Predicates.Predicate.Object.Number, 50)
+	assert.Equal(t, res.LeadingSuperviewConnection.Connection.Predicates.Predicate.Object.Number, 50)
+	assert.Equal(t, res.TrailingSuperviewConnection.Connection.Predicates.Predicate.Object.Number, 50)
 }
 
 func TestSuperviewConnectionPredicatesComplex(t *testing.T) {
@@ -218,8 +218,8 @@ func TestSuperviewConnectionPredicatesComplex(t *testing.T) {
 	res, err := psr.ParseProgram(program)
 
 	assert.Nil(t, err)
-	lsvCon := res.LeadingSuperViewConnection.Connection
-	tsvCon := res.TrailingSuperViewConnection.Connection
+	lsvCon := res.LeadingSuperviewConnection.Connection
+	tsvCon := res.TrailingSuperviewConnection.Connection
 	assert.Len(t, lsvCon.Predicates.Predicates, 1)
 	assert.Len(t, tsvCon.Predicates.Predicates, 1)
 

@@ -21,11 +21,15 @@ var (
 	})
 )
 
+// Private structs are used with participle to parse programs - we then reify
+// these into a less clumsy AST with ProgramAST. I'm sure participle provides
+// ways to do this, but I'm proceeding with the naive implementation in the
+// interest of actually finishing an MVP. Sue me, I have very little free time.
 type program struct {
 	Orientation                 *orientation                 `@@?`
-	LeadingSuperViewConnection  *leadingSuperViewConnection  `@@?`
+	LeadingSuperviewConnection  *leadingSuperviewConnection  `@@?`
 	Views                       []*view                      `@@+`
-	TrailingSuperViewConnection *trailingSuperViewConnection `@@?`
+	TrailingSuperviewConnection *trailingSuperviewConnection `@@?`
 }
 
 type view struct {
@@ -74,16 +78,26 @@ type orientation struct {
 	Direction *string `(@"H"? @"V"?)! Colon`
 }
 
-type leadingSuperViewConnection struct {
+type leadingSuperviewConnection struct {
 	SuperView  bool        `@Pipe`
 	Connection *connection `@@?`
 }
 
-type trailingSuperViewConnection struct {
+type trailingSuperviewConnection struct {
 	Connection *connection `@@?`
 	SuperView  bool        `@Pipe`
 }
 
 type connection struct {
 	Predicates *predicateList `Dash (@@ Dash)?`
+}
+
+type ProgramAST struct {
+	Orientation                 orientation
+	LeadingSuperviewConnection  connection
+	TrailingSuperviewConnection connection
+	Views                       []ViewAST
+}
+
+type ViewAST struct {
 }
