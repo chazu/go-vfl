@@ -26,8 +26,8 @@ func main() {
 		// "|[Test]-(50)-[TestTwo]|",
 		// "|-[Test]-|",
 		// "|-50-[Test]-|",
-		// "|-50-[Test]-50-|",
-		// "|-(>=50@10)-[Test]-(>=50@10)-|",
+		//"|-50-[Test]-50-|",
+		"|-(>=50@10)-[Test]-(<=50@10)-|",
 	}
 
 	for _, c := range cases {
@@ -38,7 +38,7 @@ func main() {
 			panic(err)
 		}
 		fmt.Printf("OK\n")
-		spew.Dump(res.Views[1])
+		spew.Dump(res)
 	}
 
 }

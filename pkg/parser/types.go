@@ -62,7 +62,7 @@ type Predicate struct {
 }
 
 type Priority struct {
-	Value *int `At @Number`
+	Value int `At @Number`
 }
 
 type PredicateList struct {

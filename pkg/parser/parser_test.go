@@ -53,7 +53,7 @@ func TestRelationGreaterThanPriority(t *testing.T) {
 	assert.NotNil(t, res.Views[0].Predicate.Predicate.Relation)
 	assert.True(t, res.Views[0].Predicate.Predicate.Relation.Gte)
 	assert.NotNil(t, res.Views[0].Predicate.Predicate.Priority)
-	assert.Equal(t, *res.Views[0].Predicate.Predicate.Priority.Value, 10)
+	assert.Equal(t, res.Views[0].Predicate.Predicate.Priority.Value, 10)
 }
 
 func TestTwoRelations(t *testing.T) {
@@ -93,7 +93,7 @@ func TestPriorityOnViewReference(t *testing.T) {
 	assert.Equal(t, res.Views[1].Predicate.Predicate.Object.ViewName, "Foo")
 	assert.True(t, res.Views[1].Predicate.Predicate.Relation.Gte)
 	assert.NotNil(t, res.Views[1].Predicate.Predicate.Priority)
-	assert.Equal(t, *res.Views[1].Predicate.Predicate.Priority.Value, 10)
+	assert.Equal(t, res.Views[1].Predicate.Predicate.Priority.Value, 10)
 }
 
 func TestTwoRelationsInParentheses(t *testing.T) {
@@ -138,7 +138,7 @@ func TestPriority(t *testing.T) {
 	assert.Equal(t, res.Views[0].Predicate.Predicate.Object.Number, 40)
 	assert.Nil(t, res.Views[0].Predicate.Predicate.Relation)
 	assert.NotNil(t, res.Views[0].Predicate.Predicate.Priority)
-	assert.Equal(t, *res.Views[0].Predicate.Predicate.Priority.Value, 10)
+	assert.Equal(t, res.Views[0].Predicate.Predicate.Priority.Value, 10)
 }
 
 func TestPriorityOnRelation(t *testing.T) {
@@ -154,7 +154,7 @@ func TestPriorityOnRelation(t *testing.T) {
 	assert.NotNil(t, res.Views[0].Predicate.Predicate.Relation)
 	assert.True(t, res.Views[0].Predicate.Predicate.Relation.Gte)
 	assert.NotNil(t, res.Views[0].Predicate.Predicate.Priority)
-	assert.Equal(t, *res.Views[0].Predicate.Predicate.Priority.Value, 10)
+	assert.Equal(t, res.Views[0].Predicate.Predicate.Priority.Value, 10)
 }
 
 func TestOrientationHorizontal(t *testing.T) {
@@ -192,6 +192,48 @@ func TestConnectionBetweenViewsWithConstant(t *testing.T) {
 
 	assert.Nil(t, err)
 	assert.NotNil(t, res.Views[1].Connection)
-	assert.Equal(t, res.Views[1].Connection.Predicates.Number, 50)
+	assert.Equal(t, res.Views[1].Connection.Predicates.Predicate.Object.Number, 50)
 	//assert.Nil(t, res.Views[1].Connection)
+}
+
+func TestLeadingAndTrailingSuperviewConnections(t *testing.T) {
+	program := "|-[Test]-|"
+	res, err := psr.ParseProgram(program)
+
+	assert.Nil(t, err)
+	assert.NotNil(t, res.LeadingSuperViewConnection)
+	assert.NotNil(t, res.TrailingSuperViewConnection)
+}
+
+func TestSuperviewConnectionPredicatesSimple(t *testing.T) {
+	program := "|-50-[Test]-50-|"
+	res, err := psr.ParseProgram(program)
+	assert.Nil(t, err)
+	assert.Equal(t, res.LeadingSuperViewConnection.Connection.Predicates.Predicate.Object.Number, 50)
+	assert.Equal(t, res.TrailingSuperViewConnection.Connection.Predicates.Predicate.Object.Number, 50)
+}
+
+func TestSuperviewConnectionPredicatesComplex(t *testing.T) {
+	program := "|-(>=50@10)-[Test]-(<=50@10)-|"
+	res, err := psr.ParseProgram(program)
+
+	assert.Nil(t, err)
+	lsvCon := res.LeadingSuperViewConnection.Connection
+	tsvCon := res.TrailingSuperViewConnection.Connection
+	assert.Len(t, lsvCon.Predicates.Predicates, 1)
+	assert.Len(t, tsvCon.Predicates.Predicates, 1)
+
+	assert.True(t, lsvCon.Predicates.Predicates[0].Relation.Gte)
+	assert.False(t, lsvCon.Predicates.Predicates[0].Relation.Lte)
+	assert.False(t, lsvCon.Predicates.Predicates[0].Relation.Eq)
+
+	assert.False(t, tsvCon.Predicates.Predicates[0].Relation.Gte)
+	assert.True(t, tsvCon.Predicates.Predicates[0].Relation.Lte)
+	assert.False(t, tsvCon.Predicates.Predicates[0].Relation.Eq)
+
+	assert.Equal(t, lsvCon.Predicates.Predicates[0].Priority.Value, 10)
+	assert.Equal(t, tsvCon.Predicates.Predicates[0].Priority.Value, 10)
+
+	assert.Equal(t, lsvCon.Predicates.Predicates[0].Object.Number, 50)
+	assert.Equal(t, tsvCon.Predicates.Predicates[0].Object.Number, 50)
 }
