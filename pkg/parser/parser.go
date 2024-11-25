@@ -26,12 +26,12 @@ func WithLookahead(lookahead int) func(*Parser) {
 	}
 }
 
-func (p *Parser) ParseProgram(program string) (*Program, error) {
-	psr := participle.MustBuild[Program](
+func (p *Parser) ParseProgram(pgm string) (*program, error) {
+	psr := participle.MustBuild[program](
 		participle.Lexer(l),
 		participle.UseLookahead(p.Lookahead),
 	)
-	res, err := psr.ParseString("", program)
+	res, err := psr.ParseString("", pgm)
 	if err != nil {
 		return nil, err
 	}

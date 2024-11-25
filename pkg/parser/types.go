@@ -21,69 +21,69 @@ var (
 	})
 )
 
-type Program struct {
-	Orientation                 *Orientation                 `@@?`
-	LeadingSuperViewConnection  *LeadingSuperViewConnection  `@@?`
-	Views                       []*View                      `@@+`
-	TrailingSuperViewConnection *TrailingSuperViewConnection `@@?`
+type program struct {
+	Orientation                 *orientation                 `@@?`
+	LeadingSuperViewConnection  *leadingSuperViewConnection  `@@?`
+	Views                       []*view                      `@@+`
+	TrailingSuperViewConnection *trailingSuperViewConnection `@@?`
 }
 
-type View struct {
-	Connection *Connection   `@@?`
+type view struct {
+	Connection *connection   `@@?`
 	Name       string        `"[" @Ident`
-	Predicate  PredicateList `(Space? @@)? "]"`
+	Predicate  predicateList `(Space? @@)? "]"`
 }
 
-func (v *View) Predicates() []*Predicate {
+func (v *view) Predicates() []*predicate {
 	if v.Predicate.Predicate != nil {
-		return []*Predicate{v.Predicate.Predicate}
+		return []*predicate{v.Predicate.Predicate}
 	} else if v.Predicate.Predicates != nil {
 		return v.Predicate.Predicates
 	} else {
-		return []*Predicate{}
+		return []*predicate{}
 	}
 }
 
-type Relation struct {
+type relation struct {
 	Gte bool ` @">="`
 	Lte bool `| @"<="`
 	Eq  bool `| @"=="`
 }
 
-type PredicateObject struct {
+type predicateObject struct {
 	Number   int    `@Number`
 	ViewName string `| @Ident`
 }
 
-type Predicate struct {
-	Relation *Relation        `@@?`
-	Object   *PredicateObject `@@`
-	Priority *Priority        `@@?`
+type predicate struct {
+	Relation *relation        `@@?`
+	Object   *predicateObject `@@`
+	Priority *priority        `@@?`
 }
 
-type Priority struct {
+type priority struct {
 	Value int `At @Number`
 }
 
-type PredicateList struct {
-	Predicates []*Predicate `OpenParen @@ ("," @@)* CloseParen`
-	Predicate  *Predicate   `| @@`
+type predicateList struct {
+	Predicates []*predicate `OpenParen @@ ("," @@)* CloseParen`
+	Predicate  *predicate   `| @@`
 }
 
-type Orientation struct {
+type orientation struct {
 	Direction *string `(@"H"? @"V"?)! Colon`
 }
 
-type LeadingSuperViewConnection struct {
+type leadingSuperViewConnection struct {
 	SuperView  bool        `@Pipe`
-	Connection *Connection `@@?`
+	Connection *connection `@@?`
 }
 
-type TrailingSuperViewConnection struct {
-	Connection *Connection `@@?`
+type trailingSuperViewConnection struct {
+	Connection *connection `@@?`
 	SuperView  bool        `@Pipe`
 }
 
-type Connection struct {
-	Predicates *PredicateList `Dash (@@ Dash)?`
+type connection struct {
+	Predicates *predicateList `Dash (@@ Dash)?`
 }
