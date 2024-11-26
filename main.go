@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/chazu/go-vfl/internal/parser"
 	"github.com/davecgh/go-spew/spew"
@@ -37,8 +38,12 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
+		f, err := res.Reify()
+		if err != nil {
+			log.Fatal(err)
+		}
 		fmt.Printf("OK\n")
-		spew.Dump(res)
+		spew.Dump(f)
 	}
 
 }

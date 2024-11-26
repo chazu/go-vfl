@@ -26,26 +26,30 @@ var (
 // ways to do this, but I'm proceeding with the naive implementation in the
 // interest of actually finishing an MVP. Sue me, I have very little free time.
 type program struct {
-	Orientation                 *orientation                 `@@?`
-	LeadingSuperviewConnection  *leadingSuperviewConnection  `@@?`
-	Views                       []*view                      `@@+`
-	TrailingSuperviewConnection *trailingSuperviewConnection `@@?`
+	Orientation                 orientation                 `@@?`
+	LeadingSuperviewConnection  leadingSuperviewConnection  `@@?`
+	Views                       []view                      `@@+`
+	TrailingSuperviewConnection trailingSuperviewConnection `@@?`
 }
 
 type view struct {
-	Connection *connection   `@@?`
+	Connection connection    `@@?`
 	Name       string        `"[" @Ident`
 	Predicate  predicateList `(Space? @@)? "]"`
 }
 
-func (v *view) Predicates() []*predicate {
-	if v.Predicate.Predicate != nil {
-		return []*predicate{v.Predicate.Predicate}
-	} else if v.Predicate.Predicates != nil {
-		return v.Predicate.Predicates
-	} else {
-		return []*predicate{}
+func (v *view) Predicates() []predicate {
+	res := []predicate{}
+	if len(v.Predicate.Predicates) != 0 {
+		// Here be predicates
+		res = v.Predicate.Predicates
 	}
+	if v.Predicate.Predicate != (predicate{}) {
+		// It ain't zero
+		res = append(res, v.Predicate.Predicate)
+	}
+
+	return res
 }
 
 type relation struct {
@@ -60,9 +64,9 @@ type predicateObject struct {
 }
 
 type predicate struct {
-	Relation *relation        `@@?`
-	Object   *predicateObject `@@`
-	Priority *priority        `@@?`
+	Relation relation        `@@?`
+	Object   predicateObject `@@`
+	Priority priority        `@@?`
 }
 
 type priority struct {
@@ -70,8 +74,8 @@ type priority struct {
 }
 
 type predicateList struct {
-	Predicates []*predicate `OpenParen @@ ("," @@)* CloseParen`
-	Predicate  *predicate   `| @@`
+	Predicates []predicate `OpenParen @@ ("," @@)* CloseParen`
+	Predicate  predicate   `| @@`
 }
 
 type orientation struct {
@@ -79,25 +83,35 @@ type orientation struct {
 }
 
 type leadingSuperviewConnection struct {
-	SuperView  bool        `@Pipe`
-	Connection *connection `@@?`
+	SuperView  bool       `@Pipe`
+	Connection connection `@@?`
 }
 
 type trailingSuperviewConnection struct {
-	Connection *connection `@@?`
-	SuperView  bool        `@Pipe`
+	Connection connection `@@?`
+	SuperView  bool       `@Pipe`
 }
 
 type connection struct {
-	Predicates *predicateList `Dash (@@ Dash)?`
+	Predicates predicateList `Dash (@@ Dash)?`
 }
 
+// Public structs - used to hide the jankiness of the parser structs
 type ProgramAST struct {
 	Orientation                 orientation
-	LeadingSuperviewConnection  connection
-	TrailingSuperviewConnection connection
+	LeadingSuperviewConnection  ConnectionAST
+	TrailingSuperviewConnection ConnectionAST
 	Views                       []ViewAST
 }
 
+type ConnectionAST struct {
+	Predicates  []predicate
+	IsSuperview bool
+}
+
 type ViewAST struct {
+	LeadingConnection  ConnectionAST
+	TrailingConnection ConnectionAST
+	Name               string
+	Predicates         []predicate
 }
