@@ -40,7 +40,15 @@ func (p *Parser) ParseProgram(pgm string) (*program, error) {
 }
 
 func unifyPredicateList(pl predicateList) []predicate {
-	return append(pl.Predicates, pl.Predicate)
+	res := []predicate{}
+
+	if pl.Predicate != (predicate{}) {
+		res = append(pl.Predicates, pl.Predicate)
+	} else {
+		res = pl.Predicates
+	}
+
+	return res
 }
 
 func viewToViewAST(v view) ViewAST {
@@ -52,7 +60,7 @@ func viewToViewAST(v view) ViewAST {
 	}
 
 	res.Name = v.Name
-	res.TrailingConnection = c
+	res.LeadingConnection = c
 	res.Predicates = unifyPredicateList(v.Predicate)
 
 	return res
@@ -74,8 +82,12 @@ func (p *program) Reify() (ProgramAST, error) {
 	}
 	res.TrailingSuperviewConnection = tsvc
 
-	for _, v := range p.Views {
+	for i, v := range p.Views {
 		// TODO make connections bi-directional
+		vast := viewToViewAST(v)
+		if i != 0 {
+			res.Views[i-1].TrailingConnection = vast.LeadingConnection
+		}
 		res.Views = append(res.Views, viewToViewAST(v))
 	}
 

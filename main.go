@@ -23,12 +23,12 @@ func main() {
 		// "V:|[TestView]-50-[TestTwo]|",
 		// "|[Test]|",
 		// "|[Test][TestTwo]|",
-		// "|[Test]-[TestTwo]|",
+		"|[Test]-[TestTwo]|",
 		// "|[Test]-(50)-[TestTwo]|",
 		// "|-[Test]-|",
 		// "|-50-[Test]-|",
 		//"|-50-[Test]-50-|",
-		"|-(>=50@10)-[Test]-(<=50@10)-|",
+		//"|-(>=50@10)-[Test]-(<=50@10)-|",
 	}
 
 	for _, c := range cases {
@@ -43,7 +43,7 @@ func main() {
 			log.Fatal(err)
 		}
 		fmt.Printf("OK\n")
-		spew.Dump(f)
+		spew.Dump(f.Views)
 	}
 
 }

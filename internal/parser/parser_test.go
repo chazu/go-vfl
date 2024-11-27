@@ -7,6 +7,20 @@ import (
 
 var psr = New()
 
+func TestReifiedProgramSuperviewConnections(t *testing.T) {
+	program := "[Test]"
+	res, _ := psr.ParseProgram(program)
+
+	reified, _ := res.Reify()
+
+	assert.Len(t, reified.Views, 1)
+	assert.Equal(t, reified.LeadingSuperviewConnection.IsSuperview, true)
+	assert.Empty(t, reified.LeadingSuperviewConnection.Predicates, "if no leading superview connection is specified, no predicate should be present in predicate list")
+
+	assert.Equal(t, reified.TrailingSuperviewConnection.IsSuperview, true)
+	assert.Empty(t, reified.TrailingSuperviewConnection.Predicates, "if no trailing superview connection is specified, no predicate should be present in predicate list")
+}
+
 func TestBasicProgram(t *testing.T) {
 	program := "[Test]"
 	res, err := psr.ParseProgram(program)
