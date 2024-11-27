@@ -123,7 +123,7 @@ func TestBasicPredicate(t *testing.T) {
 	assert.NotNil(t, res.Views[0].Predicate.Predicate)
 	assert.Equal(t, res.Views[0].Predicate.Predicate.Object.Number, 40)
 
-	assert.Nil(t, res.Views[0].Predicate.Predicate.Relation)
+	assert.Equal(t, res.Views[0].Predicate.Predicate.Relation, relation{})
 }
 
 func TestPriority(t *testing.T) {
@@ -136,7 +136,7 @@ func TestPriority(t *testing.T) {
 
 	assert.NotNil(t, res.Views[0].Predicate.Predicate)
 	assert.Equal(t, res.Views[0].Predicate.Predicate.Object.Number, 40)
-	assert.Nil(t, res.Views[0].Predicate.Predicate.Relation)
+	assert.Equal(t, res.Views[0].Predicate.Predicate.Relation, relation{})
 	assert.NotNil(t, res.Views[0].Predicate.Predicate.Priority)
 	assert.Equal(t, res.Views[0].Predicate.Predicate.Priority.Value, 10)
 }
@@ -183,7 +183,7 @@ func TestConnectionBetweenViews(t *testing.T) {
 	assert.NotNil(t, res.Views[1].Connection)
 	// TODO we'd like this to be not nil so
 	// lets make the connection bidirectional
-	assert.Nil(t, res.Views[0].Connection)
+	assert.Equal(t, res.Views[0].Connection, connection{})
 }
 
 func TestConnectionBetweenViewsWithConstant(t *testing.T) {
