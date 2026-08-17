@@ -1,23 +1,17 @@
-Go-VFL
-------
+# go-vfl
 
-A hopelessly naive attempt to implement Visual Format Language parsing (and rendering) in golang.
+A Go implementation of Visual Format Language (VFL) parser and composer with Extended VFL (EVFL) support.
 
-All of the layout code has been lifted wholesale from lithdew/blanc - in the interests of figuring out how to use cassowary at a lower level by studying his higher-level usage.
+## Features
 
-
-TODO
-- Figure out how to plug a reified program AST into lithdew's layout API, hoping to understand how it works
-- Figure out how to reify a layout comprising multiple programs using lithdew's Layout API - or at least what changes are needed to do so
-
-
-
-DONE
-Add golang cassowary implementation (https://github.com/lithdew/casso)
-reify shitty parsing result into something less awful for the public API
-Create struct(s) to hold program ast reified from horrible private parser structs
-Make current parser structs private
-Move parser back into internal you dimwit
+- ✅ **Complete VFL Parser**: Full support for Apple's Visual Format Language syntax
+- ✅ **Extended VFL (EVFL)**: Percentage-based layouts, expressions, view stacks, and attribute references
+- ✅ **Constraint Composition**: Combine multiple VFL programs with named view support
+- ✅ **Multiple Output Formats**: Auto Layout, Cassowary, Kiwi constraint formats
+- ✅ **Error Recovery**: Partial AST generation for better error handling
+- ✅ **Circular Reference Detection**: Automatic detection of circular dependencies
+- ✅ **Visitor Pattern**: Transform and analyze AST structures
+- ✅ **Comprehensive Testing**: TDD approach with extensive test coverage
 Move parser out of internal you dimwit
 Move parser into module
 Wrap participle in parser type with functional options pattern
