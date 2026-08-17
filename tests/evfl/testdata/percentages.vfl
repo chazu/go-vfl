@@ -1,0 +1,21 @@
+# EVFL percentage-based layouts
+
+# Simple percentage split
+H:|[sidebar(25%)]-[content(75%)]|
+
+# Three-column percentage layout
+H:|[left(20%)]-[center(60%)]-[right(20%)]|
+
+# Percentage with minimum constraints
+H:|[nav(20%,>=150)]-[main(80%)]|
+
+# Vertical percentage layout
+V:|[header(10%)]-[body(80%)]-[footer(10%)]|
+
+# Mixed fixed and percentage
+H:|[fixed(200)]-[flexible(50%)]-[flexible(50%)]|
+
+# Percentage calculations
+[halfWidth(50%)]
+[quarterHeight(25%)]
+[threeQuarters(75%)]

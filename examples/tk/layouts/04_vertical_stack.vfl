@@ -1,0 +1,8 @@
+# Vertical stack of views with different spacing and constraints
+# Demonstrates vertical layout with mixed spacing patterns
+# Includes minimum height constraints
+
+V:|[titleBar(>=44)]
+[navigationBar(44)]
+[scrollView]
+[statusBar(22)]|

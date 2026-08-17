@@ -1,0 +1,6 @@
+# EVFL mathematical expressions for dynamic layouts
+# Combines fixed values with calculations
+# Useful for responsive designs with fixed margins
+
+H:|[margin]-[content(==100%-40)]-[margin]|
+V:|[header(==50+20)]-[content(>=200)]-[footer(==header)]|

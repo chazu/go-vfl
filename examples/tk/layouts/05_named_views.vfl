@@ -1,0 +1,8 @@
+# Named view composition with multiple statements
+# Each line creates constraints for the same set of views
+# Useful for defining both horizontal and vertical layouts
+
+H:|[leftPanel(200)]-[mainContent]-[rightPanel(150)]|
+V:|[topBar(50)]-[leftPanel]-|
+V:|[topBar(50)]-[mainContent]-|
+V:|[topBar(50)]-[rightPanel]-|

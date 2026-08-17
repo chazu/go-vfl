@@ -1,0 +1,26 @@
+# Basic VFL test programs for parser validation
+
+# Simple horizontal layout
+H:|[button]-[textField]-|
+
+# Vertical layout with spacing
+V:|[header(50)]-10-[content]-10-[footer(50)]|
+
+# Fixed width constraints
+[view1(100)]
+[view2(==200)]
+[view3(>=50)]
+[view4(<=300)]
+
+# Priority constraints
+[high(100@1000)]
+[medium(100@500)]
+[low(100@250)]
+
+# Multiple views in sequence
+H:|[a]-[b]-[c]-[d]-[e]-|
+
+# Superview attachment variations
+|[leftAttached]
+[rightAttached]|
+|[bothAttached]|

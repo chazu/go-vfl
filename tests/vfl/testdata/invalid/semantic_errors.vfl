@@ -1,0 +1,27 @@
+# Semantically invalid VFL for validation testing
+
+# Conflicting constraints
+[view(==100)]
+[view(==200)]
+
+# Impossible constraints
+[view(>=200)]
+[view(<=100)]
+
+# Circular references (when using named views)
+# view1 references view2
+# view2 references view1
+
+# Priority out of range
+[view(100@1001)]
+[view(100@-1)]
+
+# Invalid attribute references
+[view(nonexistent.width)]
+
+# Division by zero in expressions
+[view(100/0)]
+
+# Invalid percentage values
+[view(150%)]
+[view(-25%)]

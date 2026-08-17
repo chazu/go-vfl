@@ -1,0 +1,6 @@
+# EVFL percentage constraints for responsive design
+# Uses == to specify exact percentage of container size
+# Percentages are calculated relative to superview dimensions
+
+H:|[sidebar(==25%)]-[content(==75%)]|
+V:|[header(==10%)]-[body(==80%)]-[footer(==10%)]|

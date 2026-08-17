@@ -1,0 +1,26 @@
+# EVFL view stack notation
+
+# Column stack (vertical)
+[column{header,content,footer}]
+
+# Row stack (horizontal)
+[row{left,center,right}]
+
+# Grid stack
+[grid{a,b,c,d,e,f,g,h,i}]
+
+# Named stacks
+[sidebar:column{logo,nav,profile}]
+
+# Stack with spacing
+[menu:row{file::edit::view::help}]
+
+# Nested stacks
+[app:column{
+  toolbar,
+  workspace:row{sidebar,editor,inspector},
+  statusbar
+}]
+
+# Stack with constraints
+[stack:column{top(50),middle,bottom(50)}]

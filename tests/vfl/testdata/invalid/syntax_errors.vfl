@@ -1,0 +1,37 @@
+# Invalid VFL syntax for error testing
+
+# Missing closing bracket
+H:|[button(100)-[text]|
+
+# Invalid constraint operator
+[view(=>100)]
+
+# Missing view name
+H:|[]-[view]|
+
+# Invalid priority
+[view(100@)]
+
+# Unclosed parenthesis
+[view(100]
+
+# Invalid spacing
+H:|[a]--[b]|
+
+# Missing pipe
+H:[view]-[view]
+
+# Invalid orientation
+X:|[view]|
+
+# Empty constraints
+[view()]
+
+# Invalid relation
+[view(~=100)]
+
+# Multiple relations
+[view(>=<=100)]
+
+# Invalid number format
+[view(10.5.5)]

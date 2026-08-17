@@ -1,0 +1,5 @@
+# Basic horizontal layout with superview attachment
+# This demonstrates the simplest VFL pattern: views connected horizontally
+# with default spacing and attached to the superview edges
+
+H:|[button(100)]-[textField]-|

@@ -1,0 +1,5 @@
+# Priority constraints using @priority notation
+# Higher priority constraints are satisfied first
+# Default priority is 1000, range is 0-1000
+
+H:|[sidebar(200@750)]-[content(>=300@500)]-[toolbar(50@1000)]|

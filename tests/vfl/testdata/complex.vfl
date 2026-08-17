@@ -1,0 +1,25 @@
+# Complex VFL layouts for comprehensive testing
+
+# Dashboard layout
+H:|[sidebar(200)]-[mainContent]-[inspector(250)]|
+V:|[toolbar(44)]-[workspace]-[statusBar(22)]|
+
+# Nested constraints with priorities
+H:|[low(>=50@250)]-[medium(>=100@500)]-[high(>=150@750)]-|
+
+# Multiple statements for same views
+H:|[header]-[body]-[footer]|
+V:|[header(60)]-[body]-[footer(40)]|
+
+# Connection variations
+H:|[a]-[b]-10-[c]-20-[d]-[e]|
+
+# Width and height constraints combined
+[square(100)]
+V:[square(100)]
+
+# Complex priority scenarios
+H:|[flexible(>=100@250)]-[fixed(200@1000)]-[flexible(>=100@250)]|
+
+# Center alignment pattern
+H:|[left(>=0@250)]-[center(300)]-[right(>=0@250)]|

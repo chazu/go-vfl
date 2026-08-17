@@ -1,0 +1,24 @@
+# Complex real-world layout example
+# Demonstrates a typical application interface with:
+# - Responsive sidebar that can collapse
+# - Header with navigation and user controls
+# - Content area with flexible sizing
+# - Status bar with multiple sections
+
+# Main horizontal layout
+H:|[sidebar(>=200,<=300@750)]-[mainArea]|
+
+# Header layout within mainArea
+H:|[logo(60)]-8-[navButtons]-[spacer(>=20)]-[userControls(150)]|
+
+# Main content area vertical layout
+V:|[headerContainer(60)]-[contentArea]-[statusBar(24)]|
+
+# Sidebar vertical layout
+V:|[sidebarHeader(60)]-[navigation]-[sidebarFooter(40)]|
+
+# Status bar horizontal sections
+H:|[statusLeft(>=100)]-[statusCenter]-[statusRight(100)]|
+
+# Navigation button horizontal layout
+H:[homeBtn(>=80)]-[projectsBtn(>=80)]-[settingsBtn(>=80)]

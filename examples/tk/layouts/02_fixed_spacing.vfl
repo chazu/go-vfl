@@ -1,0 +1,5 @@
+# Fixed spacing between views
+# Shows how to specify exact spacing values between views
+# Useful for precise control over visual spacing
+
+V:|[header]-10-[content]-20-[footer]|

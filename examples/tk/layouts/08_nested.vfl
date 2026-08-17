@@ -1,0 +1,7 @@
+# Nested view hierarchies with child layout definitions
+# Demonstrates container views with internal layouts
+# Each container defines its own coordinate system
+
+H:|[sidebar]-[mainArea:[topSection]-10-[bottomSection]]|
+V:|[toolbar(44)]-[sidebar]-|
+V:|[toolbar(44)]-[mainArea]-|

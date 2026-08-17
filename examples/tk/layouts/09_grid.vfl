@@ -1,0 +1,13 @@
+# Grid-like layout using rows and columns
+# Creates a 3x3 grid of equal-sized cells
+# Demonstrates systematic spacing and alignment
+
+# Horizontal constraints for each row
+H:|[cell1(>=100)]-[cell2(==cell1)]-[cell3(==cell1)]|
+H:|[cell4(==cell1)]-[cell5(==cell1)]-[cell6(==cell1)]|
+H:|[cell7(==cell1)]-[cell8(==cell1)]-[cell9(==cell1)]|
+
+# Vertical constraints for each column
+V:|[cell1(>=100)]-[cell4(==cell1)]-[cell7(==cell1)]|
+V:|[cell2(==cell1)]-[cell5(==cell1)]-[cell8(==cell1)]|
+V:|[cell3(==cell1)]-[cell6(==cell1)]-[cell9(==cell1)]|
