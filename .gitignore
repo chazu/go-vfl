@@ -1,0 +1,3 @@
+final_demo
+*.test
+.claude/settings.local.json
